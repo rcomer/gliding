@@ -206,7 +206,7 @@ def read_header_records(record_file):
     return records
 
 
-class GliderFlight:
+class GliderFlight(object):
     '''
     Class to hold information about a glider flight: a trace, a (possibly
     empty) task, and pilot/glider/date info in the header.  Initialised with an
