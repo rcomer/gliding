@@ -29,13 +29,13 @@ def plotonmap(lgdir, title, imagefile, turnpointlist=None, plot_extras=None,
                          record in records]))
         if len(files_new) > 0:
             write_header_records(files_new, recordfile, append=True)
-            editor = os.getenv('EDITOR','gedit')
-            x = os.spawnlp(os.P_WAIT,editor,editor,recordfile)
+            editor = os.getenv('EDITOR', 'gedit')
+            x = os.spawnlp(os.P_WAIT, editor, editor, recordfile)
             records = read_header_records(recordfile)
     else:
         write_header_records(files, recordfile)
-        editor = os.getenv('EDITOR','gedit')
-        x = os.spawnlp(os.P_WAIT,editor,editor,recordfile)
+        editor = os.getenv('EDITOR', 'gedit')
+        x = os.spawnlp(os.P_WAIT, editor, editor, recordfile)
         records = read_header_records(recordfile)
 
     files = [record.get('logger_file') for record in records]
@@ -55,7 +55,6 @@ def plotonmap(lgdir, title, imagefile, turnpointlist=None, plot_extras=None,
 
     # Choose colours for other flights
     fixed_colors = ['DarkRed'] * len(files)
-
 
     # Read traces from files
     flights = []
@@ -93,7 +92,7 @@ def plotonmap(lgdir, title, imagefile, turnpointlist=None, plot_extras=None,
         legobj.set_linewidth(2.0)
 
     # Save to file
-    fig=plt.gcf()
+    fig = plt.gcf()
     fig.tight_layout()
     fig.set_size_inches((11.7, 8.3))
     plt.savefig(imagefile + '.pdf')
@@ -104,7 +103,7 @@ def plotonmap(lgdir, title, imagefile, turnpointlist=None, plot_extras=None,
 
 def plot_range_rings():
     ax = plt.gca()
-    color='Gray'
+    color = 'Gray'
     for distance in range(10, 181, 10):
         ax.add_patch(mpatches.Circle(DSGC_OS, distance * 1000, edgecolor=color,
                      facecolor='none', transform=OS_CRS))
@@ -151,20 +150,20 @@ exceptional_flights = {
     1: ['Justin Wills 1', 'Mike Armstrong JVA', 'Trevor Stuart 621',
         'Matt Williamson 611', 'Nick Gaunt A98', 'Ron Johns 711',
         'Phil & Diana King DD2'],
-   2: ['Jon Wand T1', 'Trevor Stuart 621', 'Justin Wills 1', 'Team Eagle BBB',
-       'Bob Bromwich 94', 'Jordan Richards L18', 'Ron Johns 711', ],
-   3: ['Trevor Stuart 621', 'Mike Armstrong JVA', 'Liam Vile DG1',
-       'Nick Gaunt A98', 'Nick Harrison JDD', 'Justin Wills 1',
-       'Ron Johns 711', 'Simon Minson SM'],
-   4: ['Rod Witter LEC', 'Jon Wand T1', 'Trevor Stuart 621', 'Justin Wills 1',
-       'Jordan Richards L18', 'Mike Armstrong JVA'],
-   5: ['Justin Wills 1', 'Bob Bromwich 94', 'Trevor Stuart 621',
-       'Geddes Chalmers Z5', 'Mike Armstrong JVA', 'Andrew Cluskey J5T'],
-   6: ['Trevor Stuart 621', 'Justin Wills 1', 'Bob Bromwich 94',
-       'Mike Armstrong JVA', 'Jordan Richards L18', 'Team Eagle BBB',
-       'Pete Bennett DRE'],
-   7: ['Mike Armstrong JVA', 'Alan Price AP', 'Rod Witter LEC',
-       'Ron Johns 711', 'Phil & Diana King DD2', 'Jon Wand T1']}
+    2: ['Jon Wand T1', 'Trevor Stuart 621', 'Justin Wills 1', 'Team Eagle BBB',
+        'Bob Bromwich 94', 'Jordan Richards L18', 'Ron Johns 711', ],
+    3: ['Trevor Stuart 621', 'Mike Armstrong JVA', 'Liam Vile DG1',
+        'Nick Gaunt A98', 'Nick Harrison JDD', 'Justin Wills 1',
+        'Ron Johns 711', 'Simon Minson SM'],
+    4: ['Rod Witter LEC', 'Jon Wand T1', 'Trevor Stuart 621', 'Justin Wills 1',
+        'Jordan Richards L18', 'Mike Armstrong JVA'],
+    5: ['Justin Wills 1', 'Bob Bromwich 94', 'Trevor Stuart 621',
+        'Geddes Chalmers Z5', 'Mike Armstrong JVA', 'Andrew Cluskey J5T'],
+    6: ['Trevor Stuart 621', 'Justin Wills 1', 'Bob Bromwich 94',
+        'Mike Armstrong JVA', 'Jordan Richards L18', 'Team Eagle BBB',
+        'Pete Bennett DRE'],
+    7: ['Mike Armstrong JVA', 'Alan Price AP', 'Rod Witter LEC',
+        'Ron Johns 711', 'Phil & Diana King DD2', 'Jon Wand T1']}
 
 
 if __name__ == '__main__':
@@ -177,10 +176,9 @@ if __name__ == '__main__':
             zoom = 9
 
         plotonmap(os.path.join('enterprise', 'day{}'.format(day)),
-                 'Day {}: {}'.format(day, title_dict.get(day, '')),
-                 os.path.join('enterprise_maps/stamen', 'day{}'.format(day)),
-                 turnpointlist=turnpoint_dict.get(day),
-                 plot_extras=plot_extra_dict.get(day),
-                 labels_use=exceptional_flights.get(day),
-                 zoom=zoom)
-
+                  'Day {}: {}'.format(day, title_dict.get(day, '')),
+                  os.path.join('enterprise_maps/stamen', 'day{}'.format(day)),
+                  turnpointlist=turnpoint_dict.get(day),
+                  plot_extras=plot_extra_dict.get(day),
+                  labels_use=exceptional_flights.get(day),
+                  zoom=zoom)
