@@ -348,7 +348,7 @@ def plotmap(flights, zoom=10, tracecolors=['black'], taskcolors=['Crimson'],
             newminx = minx
         ax.set_extent([newminx, newmaxx, newminy, newmaxy], crs=target_crs)
 
-    ax.add_image(tiler, zoom, alpha=0.8)
+    ax.add_image(tiler, zoom, alpha=0.8, interpolation='spline36')
     print ax.get_images()
 
     ax.annotate('$\copyright$ Mapbox, $\copyright$ OpenStreetMap', xy=(2, 2),
