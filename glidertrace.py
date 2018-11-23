@@ -351,8 +351,9 @@ def plotmap(flights, zoom=10, tracecolors=['black'], taskcolors=['Crimson'],
     ax.add_image(tiler, zoom, alpha=0.8, interpolation='spline36')
     print ax.get_images()
 
-    ax.annotate('$\copyright$ Mapbox, $\copyright$ OpenStreetMap', xy=(2, 2),
-                xycoords='axes points', fontsize='small')
+    if isinstance(tiler, MapboxTiles):
+        ax.annotate('$\copyright$ Mapbox, $\copyright$ OpenStreetMap',
+                    xy=(2, 2), xycoords='axes points', fontsize='small')
 
     return ax
 

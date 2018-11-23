@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 """Command line interface to plot multiple traces with glidertrace.py"""
 
-import glidertrace
 import argparse
 import os
 import glob
+
 import matplotlib.pyplot as plt
 import numpy as np
+import cartopy.crs as ccrs
+
+import glidertrace
 
 # Get command line arguments
 parser = argparse.ArgumentParser(description='Plot all traces in a directory')
@@ -42,7 +45,7 @@ else:
     glidertrace.write_header_records(files, recordfile)
     editor = os.getenv('EDITOR', 'gedit')
     x = os.spawnlp(os.P_WAIT, editor, editor, recordfile)
-    records = read_header_records(recordfile)
+    records = glidertrace.read_header_records(recordfile)
 
 files = [record.get('logger_file') for record in records]
 labels = ['{} {}'.format(record.get('pilot'), record.get('compno')) for
@@ -72,7 +75,7 @@ ax1 = glidertrace.plotmap(flights, zoom=args.zoom, tracecolors=colors,
 
 # Plot turnpoints if given
 if args.turnpointlist:
-    dummy = Task(args.turnpointlist)
+    dummy = glidertrace.Task(args.turnpointlist)
     source_crs = ccrs.PlateCarree()
     target_crs = ax1.projection
     for name, coord in dummy.latlon.iteritems():
