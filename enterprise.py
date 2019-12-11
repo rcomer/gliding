@@ -44,8 +44,8 @@ def plotonmap(lgdir, title, imagefile, turnpointlist=None, plot_extras=None,
 
     labelled_files = [file_dict.pop(label.split(' ')[-1]) for
                       label in labels_use]
-    print 'found {} exceptional files'.format(len(labelled_files))
-    files = file_dict.values()
+    print('found {} exceptional files'.format(len(labelled_files)))
+    files = list(file_dict.values())
 
     # Choose colours for exceptional flights
     colors = []
@@ -72,7 +72,7 @@ def plotonmap(lgdir, title, imagefile, turnpointlist=None, plot_extras=None,
         dummy = Task(turnpointlist)
         source_crs = ccrs.PlateCarree()
         target_crs = ax1.projection
-        for name, coord in dummy.latlon.iteritems():
+        for name, coord in dummy.latlon.items():
             ax1.annotate(
                 name,
                 xy=target_crs.transform_point(coord[0], coord[1], source_crs),

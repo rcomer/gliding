@@ -25,6 +25,15 @@ GEOM_CRS = ccrs.OSGB()
 HEADER_KEYS = ['pilot', 'type', 'reg', 'compno', 'date']
 HEADER_FLAGS = ['HFPLT', 'HFGTY', 'HFGID', 'HFCID',  'HFDTE']
 
+# Restore old matplotlib defaults.
+matplotlib.rcParams['figure.figsize'] = [8.0, 6.0]
+matplotlib.rcParams['figure.dpi'] = 80
+matplotlib.rcParams['savefig.dpi'] = 100
+
+matplotlib.rcParams['font.size'] = 12
+matplotlib.rcParams['legend.fontsize'] = 'large'
+matplotlib.rcParams['figure.titlesize'] = 'medium'
+
 
 class Trace(object):
     '''
@@ -70,7 +79,7 @@ class Task(object):
     coding them.
     '''
     def __init__(self, turnpoint_list=[], latlon_list=None, barrels=False):
-        self.names = turnpoint_list
+        self.names = list(turnpoint_list)
         self.latlon = {}
 
         if len(self.names):
@@ -112,7 +121,7 @@ class Task(object):
             task_lon, task_lat = zip(*[self.latlon.get(tp) for
                                      tp in self.names])
             ax.plot(task_lon, task_lat, transform=SOURCE_CRS, color=color)
-            for name, coord in self.latlon.iteritems():
+            for name, coord in self.latlon.items():
                 ax.annotate(
                     name,
                     xy=ax.projection.transform_point(coord[0], coord[1],
@@ -172,7 +181,7 @@ def write_header_records(logger_filelist, record_file, append=False):
     '''
     if os.path.isfile(record_file) and not append:
         while True:
-            decide = raw_input(record_file+' exists.  Overwrite? (y/n)')
+            decide = input(record_file+' exists.  Overwrite? (y/n)')
             if decide == 'n':
                 return
             elif decide == 'y':
@@ -183,6 +192,7 @@ def write_header_records(logger_filelist, record_file, append=False):
     else:
         f = open(record_file, 'w')
     for logfile in logger_filelist:
+        print(logfile)
         headers = read_headers(open(logfile))
         if headers.get('pilot'):
             pilot_str = headers['pilot'].replace('.', ' ').replace('_', ' ')
@@ -312,7 +322,7 @@ def plotmap(flights, zoom=10, tracecolors=['black'], taskcolors=['Crimson'],
     if terrain:
         tiler = GoogleTiles(style='terrain')
     else:
-        tiler = MapboxTiles(mapboxkey, 'mapbox.pirates')
+        tiler = MapboxTiles(mapboxkey, 'pirates')
 
     target_crs = tiler.crs
     ax = plt.axes(projection=target_crs)
@@ -349,7 +359,7 @@ def plotmap(flights, zoom=10, tracecolors=['black'], taskcolors=['Crimson'],
         ax.set_extent([newminx, newmaxx, newminy, newmaxy], crs=target_crs)
 
     ax.add_image(tiler, zoom, alpha=0.8, interpolation='spline36')
-    print ax.get_images()
+    print(ax.get_images())
 
     if isinstance(tiler, MapboxTiles):
         ax.annotate('$\copyright$ Mapbox, $\copyright$ OpenStreetMap',
@@ -376,10 +386,10 @@ def plotaltitude(flights, ax, colors=['black']):
         x = [datetime.datetime.combine(flight.headers.get('date'), t) for t in
              flight.trace.times]
         if max(flight.trace.alt):
-            print 'plotting real'
+            print('plotting real')
             ax.plot(x, flight.trace.alt, color=color)
         else:
-            print 'plotting gps'
+            print('plotting gps')
             ax.plot(x, flight.trace.gpsalt, color=color)
     ax.grid(True)
     ax.set_ylabel('Altitude (feet)')
@@ -413,7 +423,7 @@ def plotflight(filename, pilotname=None, gliderid=None, tp_list=None,
     if tp_list is not None:
         flight.task = Task(tp_list, barrels=barrels)
 
-    print flight.task.geoms
+    print(flight.task.geoms)
 
     fig = plt.figure()
     ax1 = plotmap(flight, **kwargs)

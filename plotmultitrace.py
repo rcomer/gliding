@@ -78,7 +78,7 @@ if args.turnpointlist:
     dummy = glidertrace.Task(args.turnpointlist)
     source_crs = ccrs.PlateCarree()
     target_crs = ax1.projection
-    for name, coord in dummy.latlon.iteritems():
+    for name, coord in dummy.latlon.items():
         ax1.annotate(
             name,
             xy=target_crs.transform_point(coord[0], coord[1], source_crs),
